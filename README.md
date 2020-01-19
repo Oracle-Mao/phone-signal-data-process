@@ -1,2 +1,2 @@
 # phone-signal-data-process
-this repo is for 10th Service Outsourcing Competition.
+this repo is for 11th Service Outsourcing Competition.
