@@ -6,7 +6,7 @@ Created on Sat Dec 14 14:51:41 2019
 """
 import pandas as pd
 import re
-f=open("服创大赛-原始数据.csv")
+f=open("data/服创大赛-原始数据.csv")
 import time, datetime
 raw_data=pd.read_csv(f,usecols=[0,1,2,3])
 #1 clean
@@ -32,8 +32,15 @@ def iter_time_filter(df):
 raw_data['timestamp']=raw_data.apply(iter_time_filter,axis=1)
 raw_data=raw_data[raw_data['timestamp']!="nope"]
 
-file=open("服创大赛-基站经纬度数据.csv")
+file=open("data/服创大赛-基站经纬度数据.csv")
 lac_data=pd.read_csv(file)
 lac_data=lac_data.drop('laci',axis=1).join(lac_data['laci'].str.split('-',expand=True))
 lac_data.rename(columns={0:"lac_id",1:"cell_id"},inplace=True)
+
+def inti(df):
+    return int(df['lac_id'])
+
+lac_data['lac_id']=lac_data.apply(inti,axis=1)
+final_data=pd.merge(lac_data,raw_data)
+final_data=final_data.sort_values(by=["imsi",'timestamp'],axis=0)
 
